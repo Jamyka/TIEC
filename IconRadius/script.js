@@ -8,7 +8,6 @@ const ctx = canvas.getContext("2d");
 // };
 
 const mouse = { x: 0, y: 0 };
-
 let r = 20; // Radius
 const p1 = { x: 100, y: 50 };
 const p2 = { x: 200, y: 100 };
@@ -34,8 +33,8 @@ function pointInCircle(x, y, cx, cy, radius) {
     dy = y - cy;
   var distsq = dx * dx + dy * dy,
     rsq = radius * radius;
-
-  return distsq < rsq;
+  if (distsq < rsq) return true;
+  else return false;
 }
 // Draw arc
 const drawArc = function ([p0, p1, p2], r) {
@@ -49,39 +48,34 @@ const drawArc = function ([p0, p1, p2], r) {
       let test = pointInCircle(x, y, coor.x, coor.y, r);
       res = [];
       if (test) {
-        res.push(i);
         console.log(i);
+        alert("Icon Number: " + i);
+        return res.push(i);
       } else {
         res.push(-1);
       }
-      //   for (let i = 0; i <= res.length - 1; i++) {
-      //     if (res[i] !== -1) console.log(res[i]);
-      //   }
+      let resTest = res.every((item) => {
+        item === -1;
+      });
+      alert(resTest);
     });
     ctx.stroke();
   });
-
-  //   ctx.beginPath();
-  //   ctx.moveTo(p0.x, p0.y);
-  //   ctx.arcTo(p1.x, p1.y, p2.x, p2.y, r);
-  // ctx.arc(100, 75, 50, 0, 2 * Math.PI);
-  //   ctx.lineTo(p2.x, p2.y);
-  //   ctx.stroke();
 };
 
 let t0 = 0;
-let rr = 0; // the radius that changes over time
-let a = 0; // angle
+let rr = 0;
+let a = 0;
 const PI2 = Math.PI * 2;
-const loop = function (t) {
-  t0 = t / 1000;
-  a = t0 % PI2;
+const loop = function () {
   rr = Math.abs(Math.cos(a) * r);
-
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+  // const p1 = { x: 100, y: 50 };
+  // const p2 = { x: 200, y: 100 };
+  // const p3 = { x: 100, y: 100 };
+  // A = [100, 200, 100], B = [50, 100, 100]
   drawArc([p1, p2, p3], rr);
   drawPoints([p1, p2, p3]);
 };
 
-loop(0);
+loop();
